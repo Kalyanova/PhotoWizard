@@ -1,0 +1,1 @@
+The application for viewing, editing and taking photos.
