@@ -26,6 +26,11 @@ public class MainPresenterImpl implements MainPresenter {
         getObservable().subscribeWith(getObserver());
     }
 
+    @Override
+    public void detachView() {
+        mainView = null;
+    }
+
     private Observable<List<PhotoCollection>> getObservable(){
         return MainApplication.getApi()
                 .getPhotoCollection()
@@ -39,13 +44,17 @@ public class MainPresenterImpl implements MainPresenter {
             @Override
             public void onNext(@NonNull List<PhotoCollection> photoCollections) {
                 Log.d(TAG,"OnNext, collection size: " + photoCollections.size());
-                mainView.displayResult(photoCollections);
+                if (mainView != null) {
+                    mainView.displayResult(photoCollections);
+                }
             }
 
             @Override
             public void onError(@NonNull Throwable error) {
                 Log.d(TAG,"Error: " + error.getMessage());
-                mainView.displayError("Error fetching data: " + error.getMessage());
+                if (mainView != null) {
+                    mainView.displayError("Error fetching data: " + error.getMessage());
+                }
             }
 
             @Override
